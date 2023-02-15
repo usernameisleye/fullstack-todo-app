@@ -1,12 +1,15 @@
+import { useState } from "react";
 import Inputs from "./components/Inputs";
 import Todo from "./components/Todo";
 
 function App() {
+  function createTodo(){
+  }
+
   return (
     <div className="App">
-      {/* Nested components here */}
       <div className="main">
-        <Inputs />
+        <Inputs createTodo={createTodo}/>
         <Todo />
       </div>
     </div>

@@ -1,8 +1,8 @@
-const Inputs = () => {
+const Inputs = ({createTodo}) => {
     return ( 
         <div className="inputs">
             <input type="text" placeholder="Type in Todo..."/>
-            <button>Add Todo</button>
+            <button onClick={createTodo}>Add Todo</button>
         </div>
      );
 }
