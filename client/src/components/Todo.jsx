@@ -1,8 +1,8 @@
 import Options from './Options';
 
-const Todo = ({openOptions}) => {
+const Todo = ({openOptions, addTodo}) => {
     return (
-        <div className="todo-list">
+        <div className="todo-list" onChange={addTodo}>
             <div className="todo">
                 <span>Build React todo app today</span>
                 <Options openOptions={openOptions}/>
