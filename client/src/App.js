@@ -1,44 +1,62 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Inputs from "./components/Inputs";
 import Todo from "./components/Todo";
-import Options from "./components/Options";
 
 function App() {
-  const [value, setValue] = useState('');
-  let [todos, setTodos] = useState('');
-
-  function getValue(e){
-    setValue(e.target.value);
-  }
-
-  function addTodo(e){
-    setTodos(e.innerHTML)
-  }
-
-  function openOptions(e) {
-    let path = e.target.parentElement.lastElementChild;
-    path.classList.add("show");
-
-    document.addEventListener('click', e =>{
-      if(e.target.tagName !== 'IMG'){
-        path.classList.remove("show");
-      }        
-  })
-  }
+  const [todo, setTodo] = useState([]);
   
-  function createTodo(){
-    let todo = '';
-    todo += `<div className="todo">
-              <span>${value}</span>
-            </div>`;
-    document.querySelector('.todo-list').innerHTML += todo;
+  //Getting all todos from db and storing them in 'todo' array
+  const getTodo = async () => {
+    try{
+      const res = await fetch("http://localhost:5000/todos");
+      const resData = await res.json();
+
+      setTodo(resData);
+      console.log(todo);
+    }catch(err){
+      console.error(err.message);
+    }
   }
+
+  //Running getTodo for every page load
+  useEffect(() => {
+    getTodo()
+  }, []);
+
+  //Deleting todo from db using the DELETE method, then deleting todo from array by filter method
+  const deleteTodo = (id) => {
+    try{
+        fetch(`http://localhost:5000/todos/${todo.id}`, {
+            method: "DELETE"
+        })
+
+        setTodo(todo.filter(todo => todo.todo_id === id))
+    }catch(err){
+        console.error(err.message);
+    }
+}
+
+//Function for opening edit and delete UI
+function openOptions(e) {
+  let path = e.target.parentElement.lastElementChild;
+  path.classList.add("show");
+
+  document.addEventListener('click', e =>{
+    if(e.target.tagName !== 'IMG'){
+      path.classList.remove("show");
+    }        
+})
+}
 
   return (
     <div className="App">
       <div className="main">
-        <Inputs createTodo={createTodo} getValue={getValue} value={value}/>
-        <Todo openOptions={openOptions} addTodo={addTodo}/>
+        <Inputs/>
+        {
+          todo.map(todo =>(
+            <Todo openOptions={openOptions} todo={todo} deleteTodo={deleteTodo}/>
+          ))
+        }
       </div>
     </div>
   );
