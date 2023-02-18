@@ -26,14 +26,15 @@ function App() {
   //Deleting todo from db using the DELETE method, then deleting todo from array by filter method
   const deleteTodo = (id) => {
     try{
-        fetch(`http://localhost:5000/todos/${todo.id}`, {
+        fetch(`http://localhost:5000/todos/${id}`, {
             method: "DELETE"
-        })
+        });
 
-        setTodo(todo.filter(todo => todo.todo_id === id))
+        setTodo(todo.filter(todo => todo.todo_id !== id))
     }catch(err){
         console.error(err.message);
     }
+    console.log(todo.todo_id);
 }
 
 //Function for opening edit and delete UI

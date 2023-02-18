@@ -27,8 +27,9 @@ const Options = ({openOptions, deleteTodo, todo}) => {
         <ul className="todo-options">
             <li><img src="./images/pen-to-square-solid.svg" alt="Edit Icon"
             onClick={editTodo}/> Edit</li>
+            
             <li><img src="./images/trash-solid.svg" alt="Delete Icon"
-            onClick={deleteTodo}/> Delete</li>
+            onClick={() => deleteTodo(todo.todo_id)}/> Delete</li>
         </ul>
         </div>
      );
